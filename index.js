@@ -1,22 +1,30 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
-const RuntimeClientFactory = require("@voiceflow/runtime-client-js");
+const RuntimeClientFactory = require('@voiceflow/runtime-client-js').default;
 
-const client = new Discord.Client();
+const discordClient = new Discord.Client();
 
-const prefix = "!";
+const factory = new RuntimeClientFactory(config);
+const runtimeClient = factory.createClient();
 
-client.on("message", async (message) => { 
+const START_COMMAND = '!start';
+
+let inConversation = false;
+
+discordClient.on('message', async (message) => { 
   if (message.author.bot) return;
-  if (!message.content.startsWith(prefix)) return;
-  
-  const commandBody = message.content.slice(prefix.length);
-  const args = commandBody.split(' ');
-  const command = args.shift().toLowerCase();
+  if (message.content !== START_COMMAND && !inConversation) return;
 
-  if (command === "ping") {
-    message.reply('pong'); 
-  }
-});      
+  const response = !inConversation ? await runtimeClient.start() : await runtimeClient.sendText(message.content);
+  const traces = response.getTrace();
 
-client.login(config.BOT_TOKEN);
+  traces.forEach(trace => {
+    if (trace.payload?.message && trace.type === 'speak') {
+      message.reply(trace.payload.message);
+    }
+  });
+
+  inConversation = !response.isEnding();
+});
+
+discordClient.login(config.BOT_TOKEN);
