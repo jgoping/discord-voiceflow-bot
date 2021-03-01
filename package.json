@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/jgoping/discord-voiceflow-bot#readme",
   "dependencies": {
-    "@voiceflow/runtime-client-js": "^1.13.0",
+    "@voiceflow/runtime-client-js": "^1.13.1",
     "discord.js": "^12.5.1"
   }
 }
