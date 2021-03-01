@@ -15,7 +15,7 @@ discordClient.on('message', async (message) => {
   if (message.author.bot) return;
   if (message.content !== START_COMMAND && !inConversation) return;
 
-  const response = !inConversation ? await runtimeClient.start() : await runtimeClient.sendText(message.content);
+  const response = message.content === START_COMMAND ? await runtimeClient.start() : await runtimeClient.sendText(message.content);
   const traces = response.getTrace();
 
   traces.forEach(trace => {
