@@ -22,7 +22,7 @@ discordClient.on('message', async (message) => {
   const traces = response.getTrace();
 
   traces.forEach(trace => {
-    if (trace.payload?.message && trace.type === 'speak') {
+    if (trace.type === 'speak') {
       message.reply(trace.payload.message);
     }
   });
