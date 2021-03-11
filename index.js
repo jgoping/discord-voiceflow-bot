@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
-const RuntimeClientFactory = require('@voiceflow/runtime-client-js').default;
+const { default: RuntimeClientFactory } = require('@voiceflow/runtime-client-js');
 
 const discordClient = new Discord.Client();
 
