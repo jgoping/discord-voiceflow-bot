@@ -23,7 +23,11 @@ discordClient.on('message', async (message) => {
 
   traces.forEach(trace => {
     if (trace.type === 'speak') {
-      message.reply(trace.payload.message);
+      message.channel.send(trace.payload.message);
+    } else if (trace.type === 'visual') {
+      message.channel.send({
+        files: [trace.payload.image],
+      });
     }
   });
 
